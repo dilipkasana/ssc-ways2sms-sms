@@ -31,7 +31,7 @@ public class Main {
 				if (message.length() > 120) {
 					message = message.substring(0, 120);
 				}
-				// new Way2Sms("9413102070", "1733").sendSMS("9958378173",
+				// new Way2Sms().sendSMS("",
 				// message
 				// + ":" + new SimpleDateFormat("MMM-yy hh:mm aaa").format(new
 				// Date()));
@@ -40,14 +40,14 @@ public class Main {
 				// System.out.println(ss.format(new Date()));
 				// if (Integer.parseInt(ss.format(new Date())) < 21
 				// && Integer.parseInt(ss.format(new Date())) > 8) {
-				new Way2Sms("9958378173", "173314").sendSMS("9958378173",
+				new Way2Sms("", "").sendSMS("",
 						message + ":" + sss.format(new Date()));
 				// }
 
 				// Thread.sleep(1000 * 60 * 1);
-				// new Way2Sms("9958378173", "173314")
+				// new Way2Sms("", "")
 				// .sendSMS(
-				// "7406262136",
+				// "",
 				// "my Ip is "1
 				// + getFirstNonLoopbackAddress(true,
 				// false)
@@ -56,7 +56,7 @@ public class Main {
 				// + new SimpleDateFormat(
 				// "MMM-yy hh:mm aaa")
 				// .format(new Date()));
-				// way2Sms.sendSMS("9958378173", message);
+				// way2Sms.sendSMS("", message);
 
 				System.out.println("Message has been sent successfully!"
 						+ message);
