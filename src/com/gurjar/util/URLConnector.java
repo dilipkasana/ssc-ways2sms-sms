@@ -7,14 +7,67 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class URLConnector {
 	private HttpURLConnection connection;
 	private Proxy proxy;
 
+	public HttpURLConnection getConnection() {
+		return connection;
+	}
+
 	public void setProxy(String host, int port) {
 		proxy = new Proxy(Proxy.Type.HTTP,
 				java.net.InetSocketAddress.createUnresolved(host, port));
+	}
+
+	public void connect(String urlPath, boolean redirect, String method,
+			String cookie, String credentials, HashMap<String, String> map)
+			throws Exception {
+		try {
+			URL url = new URL(urlPath);
+
+			if (null != proxy)
+				connection = (HttpURLConnection) url.openConnection(proxy);
+			else
+				connection = (HttpURLConnection) url.openConnection();
+
+			connection.setInstanceFollowRedirects(redirect);
+
+			if (cookie != null)
+				connection.setRequestProperty("Cookie", cookie);
+
+			if (method != null && method.equalsIgnoreCase("POST")) {
+				connection.setRequestMethod(method);
+				connection.setRequestProperty("Content-Type",
+						"application/x-www-form-urlencoded");
+			}
+			if (map != null) {
+				for (Entry<String, String> entry : map.entrySet()) {
+					connection.setRequestProperty(entry.getKey(),
+							entry.getValue());
+				}
+			}
+			connection
+					.setRequestProperty("User-Agent",
+							"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:10.0.4) Gecko/20100101 Firefox/10.0.4");
+
+			connection.setUseCaches(false);
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+
+			if (credentials != null) {
+				DataOutputStream wr = new DataOutputStream(
+						connection.getOutputStream());
+				wr.writeBytes(credentials);
+				wr.flush();
+				wr.close();
+			}
+		} catch (Exception exception) {
+			throw new Exception("Connection Error", exception);
+		}
 	}
 
 	public void connect(String urlPath, boolean redirect, String method,
@@ -37,7 +90,6 @@ public class URLConnector {
 				connection.setRequestProperty("Content-Type",
 						"application/x-www-form-urlencoded");
 			}
-
 			connection
 					.setRequestProperty("User-Agent",
 							"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:10.0.4) Gecko/20100101 Firefox/10.0.4");
@@ -66,8 +118,13 @@ public class URLConnector {
 
 			for (int i = 1; (headerName = connection.getHeaderFieldKey(i)) != null; i++) {
 				if (headerName.equals("Set-Cookie")) {
-					cookie = connection.getHeaderField(i).split(";")[0];
-					break;
+					String st = connection.getHeaderField(i);
+					if (cookie == null || cookie.equals(str)) {
+						cookie = st.split(";")[0];
+					} else {
+						cookie = cookie + ";" + st.split(";")[0];
+					}
+					// break;
 				}
 			}
 		}
