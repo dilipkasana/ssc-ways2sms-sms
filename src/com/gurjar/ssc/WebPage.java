@@ -1,7 +1,11 @@
 package com.gurjar.ssc;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -106,9 +110,13 @@ public class WebPage {
 		StringBuffer response = new StringBuffer();
 
 		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
+			response.append(inputLine+"\n");
 		}
 		in.close();
+//		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+//				new FileOutputStream(new File("test.html"))));
+//		bw.write(response.toString());
+//		bw.close();
 		return response.toString();
 	}
 }

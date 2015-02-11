@@ -61,27 +61,36 @@ public class Main {
 		String one60by2username = "";
 		String one60by2Passwd = "";
 		String receiver[] = { "", "", "" };
-		
-		
-		
-		
 
-		
-		
-		
-		
+
+
 		SimpleDateFormat ss = new SimpleDateFormat("HH");
 		ss.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
 		System.out.println(ss.format(new Date()));
-		if (Integer.parseInt(ss.format(new Date())) < 21
-				&& Integer.parseInt(ss.format(new Date())) > 8) {
+		SimpleDateFormat ssst = new SimpleDateFormat("MMM-yy hh:mm aaa");
+		ssst.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
+
+		String xxx;
+		try {
+			xxx = "my Ip is "
+					+ getFirstNonLoopbackAddress(true, false)
+					+ " and  status is RUNNING.sent from GOOGLE CLOUD BY DILIP SINGH @"
+					+ ssst.format(new Date());
+		} catch (Exception e1) {
+			xxx = "my Ip is "
+					+ "127.0.0.1"
+					+ " and  status is RUNNING.sent from GOOGLE CLOUD BY DILIP SINGH @"
+					+ ssst.format(new Date());
+
+		}
+		if (Integer.parseInt(ss.format(new Date())) < 22
+				&& Integer.parseInt(ss.format(new Date())) > 7) {
 			System.out.println("Time is "
 					+ Integer.parseInt(ss.format(new Date())));
 			if (flag) {
 				try {
-					new Way2Sms(ways2smsId, ways2SMSPasswd)
-							.sendSMS(receiver[0],
-									message + ":" + sss.format(new Date()));
+					new Way2Sms(ways2smsId, ways2SMSPasswd).sendSMS(
+							receiver[0],message + ":" + sss.format(new Date()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,32 +104,17 @@ public class Main {
 			} else {
 				try {
 					new Way2Sms(ways2smsId, ways2SMSPasswd)
-							.sendSMS(receiver[0],
-									message + ":" + sss.format(new Date()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				try {
-					new My160By2SMS(one60by2username, one60by2Passwd)
 							.sendSMS(receiver[1],
 									message + ":" + sss.format(new Date()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-			try {
-				new Way2Sms(ways2anotherUser, ways2anotherpasswd)
-						.sendSMS(
-								receiver[2],
-								"my Ip is "
-										+ getFirstNonLoopbackAddress(true,
-												false)
-										+ " and  status is RUNNING.sent from GOOGLE CLOUD BY DILIP SINGH @"
-										+ new SimpleDateFormat(
-												"MMM-yy hh:mm aaa")
-												.format(new Date()));
-			} catch (Exception e) {
-				e.printStackTrace();
+				try {
+					new My160By2SMS(one60by2username, one60by2Passwd).sendSMS(
+							receiver[0], message + ":" + sss.format(new Date()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

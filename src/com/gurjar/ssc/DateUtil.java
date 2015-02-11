@@ -1,5 +1,7 @@
 package com.gurjar.ssc;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtil {
 
@@ -8,7 +10,7 @@ public class DateUtil {
 
 	@SuppressWarnings("deprecation")
 	private static Date getDate(String str) {
-		int month = getMonth(str);
+		int month = getMonthInt(str);
 		int day = getDay(str);
 		int year = getYear(str);
 		return new Date(year - 1900, month, day);
@@ -57,8 +59,9 @@ public class DateUtil {
 		}
 		return null;
 	}
+	
 
-	private static Integer getMonth(String str) {
+	private static Integer getMonthInt(String str) {
 		if (str.toLowerCase().startsWith("Declared on".toLowerCase())) {
 			str = str.substring("Declared on".length(), str.length());
 		}
@@ -73,6 +76,32 @@ public class DateUtil {
 			}
 		}
 		return index;
+	}
+
+	static String getMonth(String str) {
+		if (str.toLowerCase().startsWith("Declared on".toLowerCase())) {
+			str = str.substring("Declared on".length(), str.length());
+		}
+		Integer index = null;
+		for (int i = 0; i < month.length; i++) {
+			if (str.toLowerCase().contains(month[i].toLowerCase())) {
+				if (index == null) {
+					index = i;
+				} else {
+					return null;
+				}
+			}
+		}
+		if(index==null ||(index<0 || index>=month.length)){
+			SimpleDateFormat sss = new SimpleDateFormat("MMM");
+			sss.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
+			System.out.println("index "+index+" for"+str+" returning current month");
+			Date d=new Date();
+			String month=sss.format(d);
+			return month;
+		}else{
+		return month[index];
+		}
 	}
 
 }

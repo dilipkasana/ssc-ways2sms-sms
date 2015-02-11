@@ -1,4 +1,5 @@
 package com.gurjar.ssc;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,9 @@ public class SSCParseUtil {
 							text = text.substring(0, 90);
 						}
 						if (!date.text().startsWith("Date(dd/mm/yyyy)")) {
-							return getDay(date.text())
-									+ " January is lates Update in SSC\n"
-									+ text;
+							return getDay(date.text()) + " "
+									+ DateUtil.getMonth(date.text())
+									+ " is lates Update in SSC\n" + text;
 						}
 					} catch (Exception e) {
 						throw new IOException(" " + date.text(), e);
@@ -58,7 +59,7 @@ public class SSCParseUtil {
 						&& str.charAt(i + 1) <= '9') {
 					ret = ret * 10 + str.charAt(i + 1) - '0';
 				}
-				if (ret > 0 && ret < 30) {
+				if (ret > 0 && ret < 32) {
 					return ret;
 				}
 			}
@@ -88,6 +89,14 @@ public class SSCParseUtil {
 				Element element = (Element) n;
 				if (element.tagName().equalsIgnoreCase(string)) {
 					return element;
+				}
+			}
+		}
+		if (nn instanceof Element) {
+			Element element = (Element) nn;
+			for (Element e : element.getAllElements()) {
+				if (e.tagName().equalsIgnoreCase(string)) {
+					return e;
 				}
 			}
 		}
